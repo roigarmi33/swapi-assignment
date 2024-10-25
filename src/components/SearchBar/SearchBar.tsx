@@ -1,25 +1,20 @@
-import { Autocomplete, debounce, TextField } from "@mui/material";
-import { useRef, useState } from "react";
-import { GetPageResult, userService } from "../../services/usersService";
-import { IPeople } from "swapi-ts";
+import { debounce, TextField } from "@mui/material";
+import { useSetAtom } from "jotai";
+import { useRef } from "react";
+import { searchResultsAtom } from "../../services/appState/SearchResultsAtom";
+import { userService } from "../../services/usersService";
+
 
 export const SearchBar = (): JSX.Element => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [options, setOptions] = useState<Array<IPeople>>([])
+    const setOptions = useSetAtom(searchResultsAtom)
     const handleChange = debounce(async () => {
         if (inputRef.current) {
             const characterName = inputRef.current.value;
             const pageResults = await userService.searchCharacter(characterName)
-            setOptions(pageResults.results)
+            setOptions(pageResults)
         }
     }, 500);
 
-    return (
-        <Autocomplete
-            options={options}
-            renderInput={(params) =>
-                <TextField onChange={handleChange} inputRef={params.InputProps.ref} />
-            }
-        />
-    )
+    return <TextField inputRef={inputRef} onChange={handleChange} placeholder="Search Characters" sx={{ width: "85%" }} variant="outlined" />
 }
