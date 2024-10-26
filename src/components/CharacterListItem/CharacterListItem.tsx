@@ -1,4 +1,4 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Checkbox, Modal, Typography } from "@mui/material";
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, Checkbox, Modal, Typography } from "@mui/material";
 import { useState } from "react";
 import { Character } from "../../modules/Character";
 import { CharacterModal } from "../CharacterModal/CharacterModal";
