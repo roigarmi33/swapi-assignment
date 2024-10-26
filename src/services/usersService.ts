@@ -16,14 +16,12 @@ interface GetPageResult<T> {
  */
 export interface PageSearchResults<T> {
     results: Array<T>;
-    next?: string;
-    page: number;
-    search: string;
+    nextPageCallback?: () => Promise<PageSearchResults<T>>
 }
 
 const searchCharacter = async (search: string, page: number = 1): Promise<PageSearchResults<Character>> => {
     const searchResultsData: GetPageResult<IPeople> = await People.getPage(page, search);
-    const { results } = searchResultsData;
+    const { results, next } = searchResultsData;
     const characters: Array<Character> = await Promise.all(results.map(async (people) => {
         const homeworld = (await Planets.find((planet) => people.homeworld === planet.url)).resources[0].value;
         const character: Character = {
@@ -36,11 +34,15 @@ const searchCharacter = async (search: string, page: number = 1): Promise<PageSe
         }
         return character
     }))
-    const pageResults: PageSearchResults<Character> = {
-        next: searchResultsData.next,
+
+
+    const getNextPage = () => {
+        return searchCharacter(search, page + 1)
+    }
+
+    const pageResults = {
         results: characters,
-        search,
-        page
+        nextPageCallback: next ? getNextPage : undefined
     }
     return pageResults
 }

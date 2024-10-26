@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-
 import { Character } from "../../modules/Character";
 import { PageSearchResults } from "../usersService";
 

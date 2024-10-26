@@ -1,39 +1,38 @@
 import { Avatar, Checkbox, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { useAtom, useAtomValue } from "jotai";
 import { favouriteCharactersAtom, searchResultsAtom } from "../../services/appState/SearchResultsAtom";
+import { CharacterListItem } from "../CharacterListItem/CharacterListItem";
+import { Character } from "../../modules/Character";
+import { PageSearchResults } from "../../services/usersService";
 
 export const ResultsList = (): JSX.Element => {
-    const searchResults = useAtomValue(searchResultsAtom);
-    const characters = useAtomValue(searchResultsAtom);
-    const [favouriteCharacters, setFavouriteCharacters] = useAtom(favouriteCharactersAtom)
+    const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
+    if (!searchResults) {
+        return <></>
+    }
+    const { results, nextPageCallback } = searchResults;
+    const handleMoreResults = async () => {
+        if (!nextPageCallback) {
+            return;
+        }
+        const nextPageResults: PageSearchResults<Character> = await nextPageCallback();
+        setSearchResults((prev) => {
+            const previousResults = prev?.results ?? []
+            return ({
+                results: [...previousResults, ...nextPageResults.results],
+                nextPageCallback: nextPageResults.nextPageCallback
+            })
+        })
+
+    }
 
     return (<List>
-        {characters?.results.map((character) => {
-            const imageUrl = `https://picsum.photos/200/300?random=${character.name}`
-            return (
-                <ListItem key={character.name} secondaryAction={
-                    <Checkbox checked={favouriteCharacters.has(character)} onClick={() => {
-                        const characterInFavourites = favouriteCharacters.has(character);
-                        const updatedSet = new Set(favouriteCharacters.values());
-                        characterInFavourites ? updatedSet.delete(character) : updatedSet.add(character);
-                        setFavouriteCharacters(updatedSet)
-                    }}
-                    />
-                }>
-                    <ListItemButton>
-                        <ListItemAvatar>
-                            <Avatar src={imageUrl} />
-                        </ListItemAvatar>
-                        <ListItemText>
-                            {character.name}
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-            )
-        })}
-        {searchResults?.next &&
+        {results.map((character) => (
+            <CharacterListItem character={character} key={character.name} />
+        ))}
+        {nextPageCallback &&
             <ListItem >
-                <ListItemButton>
+                <ListItemButton onClick={handleMoreResults}>
                     <ListItemText>
                         Load more results
                     </ListItemText>
