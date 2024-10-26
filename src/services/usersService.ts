@@ -20,8 +20,7 @@ export interface PageSearchResults<T> {
 }
 
 const searchCharacter = async (search: string, page: number = 1): Promise<PageSearchResults<Character>> => {
-    const searchResultsData: GetPageResult<IPeople> = await People.getPage(page, search);
-    const { results, next } = searchResultsData;
+    const { results, next }: GetPageResult<IPeople> = await People.getPage(page, search);
     const characters: Array<Character> = await Promise.all(results.map(async (people) => {
         const homeworld = (await Planets.find((planet) => people.homeworld === planet.url)).resources[0].value;
         const character: Character = {
@@ -40,7 +39,7 @@ const searchCharacter = async (search: string, page: number = 1): Promise<PageSe
         return searchCharacter(search, page + 1)
     }
 
-    const pageResults = {
+    const pageResults: PageSearchResults<Character> = {
         results: characters,
         nextPageCallback: next ? getNextPage : undefined
     }

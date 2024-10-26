@@ -7,12 +7,12 @@ import { userService } from "../../services/usersService";
 
 export const SearchBar = (): JSX.Element => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const setOptions = useSetAtom(searchResultsAtom)
+    const setSearchResults = useSetAtom(searchResultsAtom)
     const handleChange = debounce(async () => {
         if (inputRef.current) {
             const characterName = inputRef.current.value;
             const pageResults = await userService.searchCharacter(characterName)
-            setOptions(pageResults)
+            setSearchResults(pageResults)
         }
     }, 500);
 
