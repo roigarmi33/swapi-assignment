@@ -1,0 +1,10 @@
+.popover-color-picker {
+  border-style: double;
+  border-color: #000;
+  border-radius: 50%;
+  height: 5vh;
+  width: 5vh;
+  padding: 1px;
+  align-self: center;
+  cursor: pointer;
+}

@@ -1,10 +1,23 @@
 .App {
-  text-align: center;
   display: flex;
-  height: 99vh;
+  justify-content: space-between;
+  /* Space between the boxes */
+  align-items: stretch;
+  /* Ensures boxes have the same height */
+  height: calc(100vh-40px);
+  /* Full viewport height if you want the divs centered vertically */
+  padding: 20px;
+  /* Distance from corners */
 }
 
-.search-users-area {
-  width: 50%;
-  padding: 5px 5px 0px 0px;
+.box {
+  display: flex;
+  flex: 1;
+  margin: 0 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  justify-content: center;
+  height: 90vh
 }

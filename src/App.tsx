@@ -1,14 +1,14 @@
-import './App.css';
-import { FavouriteList } from './components/FavouritesList/FavouriteList';
-import { SearchableUserList } from './components/SearchableUserList/SearchableUserList';
+import "./App.css";
+import { FavouriteList } from "./components/FavouritesList/FavouritesList";
+import { SearchableUserList } from "./components/SearchableUserList/SearchableUserList";
 
 function App() {
   return (
     <div className="App">
-      <div className="search-users-area">
+      <div className="box">
         <SearchableUserList />
       </div>
-      <div className="favourites-list-area">
+      <div className="box">
         <FavouriteList />
       </div>
     </div>
