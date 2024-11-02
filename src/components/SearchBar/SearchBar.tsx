@@ -1,6 +1,6 @@
 import { debounce, TextField } from "@mui/material";
 import { useSetAtom } from "jotai";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { searchResultsAtom } from "../../services/appState/SearchResultsAtom";
 import { userService } from "../../services/usersService";
 import "./SearchBar.css";
@@ -15,6 +15,9 @@ export const SearchBar = (): JSX.Element => {
       setSearchResults(pageResults);
     }
   }, 500);
+  useEffect(() => {
+    handleChange();
+  }, []);
 
   return (
     <div className="search-bar">
