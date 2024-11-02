@@ -18,6 +18,10 @@ export const useFavouritesCharactersActions = () => {
     setFavouriteCharacters((previousMap) => {
       const newMap = new Map(previousMap);
       newMap.delete(character.name);
+      localStorage.setItem(
+        "favourites",
+        JSON.stringify(Array.from(newMap.entries()))
+      );
       return newMap;
     });
   };
@@ -25,6 +29,10 @@ export const useFavouritesCharactersActions = () => {
     setFavouriteCharacters((previousMap) => {
       const newMap = new Map(previousMap);
       newMap.set(character.name, character);
+      localStorage.setItem(
+        "favourites",
+        JSON.stringify(Array.from(newMap.entries()))
+      );
       return newMap;
     });
   };
